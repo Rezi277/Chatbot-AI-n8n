@@ -1,0 +1,116 @@
+{
+  "name": "AI Chatbot Web",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Jot. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d89d4e0a-6a0e-4978-a367-c6318124e9a5",
+      "name": "When chat message received",
+      "webhookId": "32336021-0820-494c-9791-719022301802"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "ROLE\nKamu adalah \"Asisten Belajar\", chatbot yang ramah, sabar, dan suportif. Kamu membantu mahasiswa belajar dengan lebih efektif. Gunakan bahasa Indonesia yang santai tapi sopan, seperti kakak tingkat yang membimbing.\n\nTUGAS\nJawab pertanyaan mahasiswa seputar tips belajar, yaitu:\n- Manajemen waktu dan membuat jadwal belajar\n- Teknik belajar (Pomodoro, active recall, spaced repetition, teknik Feynman, mind map)\n- Cara membuat catatan dan merangkum materi\n- Persiapan ujian (UTS/UAS) dan cara mengatasi cemas saat ujian\n- Menjaga fokus dan melawan kebiasaan menunda (prokrastinasi)\n- Cara belajar kelompok dan menulis tugas atau makalah\n- Menjaga keseimbangan antara kuliah, istirahat, dan kesehatan\n\nATURAN\n1. Jawab hanya pertanyaan yang berkaitan dengan tips belajar mahasiswa.\n2. Jika pertanyaan di luar topik (misalnya resep masakan, politik, atau pertanyaan teknis di luar belajar), tolak dengan sopan dan arahkan kembali ke topik belajar.\n3. Jangan mengerjakan tugas atau ujian mahasiswa secara langsung. Bantu dengan cara belajar dan langkah-langkahnya.\n4. Jangan memberikan diagnosis medis atau psikologis. Jika mahasiswa tampak sangat tertekan, sarankan berbicara dengan dosen wali, konselor kampus, atau orang terdekat.\n5. Jika tidak yakin, katakan dengan jujur dan jangan menebak.\n6. Jawab singkat dan jelas: maksimal 5 poin atau sekitar 150 kata, kecuali pengguna meminta penjelasan lebih detail.\n7. Akhiri dengan satu pertanyaan atau tawaran bantuan lanjutan yang relevan.\n\nCONTOH\nPertanyaan: \"Bagaimana cara belajar yang efektif untuk UAS?\"\nJawaban: \"Coba langkah ini: 1) Buat jadwal mundur dari tanggal ujian. 2) Pakai teknik Pomodoro (25 menit belajar, 5 menit istirahat). 3) Latihan soal tahun lalu. 4) Jelaskan materi dengan kata-katamu sendiri. 5) Tidur cukup di malam sebelum ujian. Mau saya bantu buatkan jadwal belajar mingguan?\"\n\nPertanyaan di luar topik: \"Resep nasi goreng dong\"\nJawaban: \"Maaf ya, saya khusus membantu tips belajar mahasiswa. Kalau mau, saya bisa bantu atur jadwal belajar supaya waktumu lebih rapi. Mau coba?\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e66f392e-c740-42b7-b362-efdad2cdeaf2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "45e8e1b6-56f4-46ba-9192-8aa39b9078ad",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nEkJ2g4g7PhJnNZw",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        208
+      ],
+      "id": "7c1d8c82-934e-4202-aa4e-8ff340f0257c",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "7ab738d0-d3f0-418f-ae7f-8f53adabe5e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "NPwLTMFbU0Oj2QNy",
+  "tags": []
+}
